@@ -24,7 +24,7 @@ const doWork = prev =>
     getLast()
         .then(value => calculate(prev, value))
         .then(result => result || prev);
-
+const getSign = value => value ? (value > 0 ? '+' : '-') : '';
 
 module.exports = {
     start: (timeout = 3000) => {
