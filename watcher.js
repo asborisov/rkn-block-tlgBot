@@ -1,6 +1,5 @@
 const rkn = require('./rkn');
 
-const getSign = value => value ? (value > 0 ? '+' : '-') : '';
 const getDiff = (prev, last) => (prev && prev.value && last && last.value) ? (last.value - prev.value) : 0;
 const calculateNext = (prev, last) => prev.ts === last.ts ? prev : Object.assign({}, last, {diff: getDiff(prev, last)});
 
@@ -26,30 +25,30 @@ class Watcher {
                     return next;
                 })
                 .then(next => this.last = next)
-                .catch(() => {});
+                .catch(e => console.log('Error during response get/parse', e));
         }, this.timeout);
+        console.log('Watcher started');
     }
 
     stop() {
         if (!this.interval) return;
         clearInterval(this.interval);
         this.interval = null;
+        console.log('Watcher stopped');
     }
 
     addOnUpdateCb(key, cb) {
         this.cbs[key] = cb;
+        console.log(`Callback for chat ${key} added. Totally in list ${Object.keys(this.cbs).length}`);
     }
 
     removeOnUpdateCb(key) {
         delete this.cbs[key];
+        console.log(`Callback for chat ${key} removed. Totally in list ${Object.keys(this.cbs).length}`);
     }
 
     getBlocked() {
         return this.last;
-    }
-
-    static format(value) {
-        return `Currently blocked: ${value.value}${value.diff ? `, diff: ${getSign(value.diff)}${value.diff}` : ''}`;
     }
 }
 

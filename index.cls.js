@@ -1,4 +1,5 @@
 const Watcher = require('./watcher');
+const format = require('./formatter').formatRkn;
 
 const watcher = new Watcher(3000);
 const color = (diff) => {
@@ -8,7 +9,8 @@ const color = (diff) => {
 };
 const log = value => {
     if (!value) return;
-    console.log(color(value.diff), Watcher.format(value));
+    console.log(color(value.diff), format(value));
 };
 watcher.addOnUpdateCb('console', log);
+const interval = setInterval(() => log(watcher.getBlocked()), 1000 * 60 * 15); // every 15 minutes
 watcher.start();
