@@ -7,7 +7,12 @@ const getLast = () => new Promise((resolve, reject) => {
             data += chunk;
         });
         resp.on('end', () => {
-            resolve(JSON.parse(data).reduce((acc, v) => v.x > acc.ts ? {ts: v.x, value: v.y} : acc, {ts: 0, value: 0}));
+            try {
+                resolve(JSON.parse(data).reduce((acc, v) => v.x > acc.ts ? {ts: v.x, value: v.y} : acc, {ts: 0, value: 0}));
+            }
+            catch (e) {
+                reject();
+            }
         });
     }).on("error", (err) => {
         reject("Error: " + err.message);

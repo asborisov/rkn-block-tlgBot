@@ -25,7 +25,8 @@ class Watcher {
                     }
                     return next;
                 })
-                .then(next => this.last = next);
+                .then(next => this.last = next)
+                .catch(() => {});
         }, this.timeout);
     }
 
