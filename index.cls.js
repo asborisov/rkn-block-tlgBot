@@ -1,3 +1,4 @@
+const notifier = require('node-notifier');
 const Watcher = require('./watcher');
 const format = require('./formatter').formatRkn;
 
@@ -10,6 +11,10 @@ const color = (diff) => {
 const log = value => {
     if (!value) return;
     console.log(color(value.diff), format(value));
+    notifier.notify({
+        title: 'RKN blocks',
+        message: format(value)
+    });
 };
 watcher.addOnUpdateCb('console', log);
 const interval = setInterval(() => log(watcher.getBlocked()), 1000 * 60 * 15); // every 15 minutes
